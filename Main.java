@@ -23,7 +23,7 @@ public class Main {
             System.out.println("[6] Buscar livro por ID");
             System.out.println("[7] Editar livro");
             System.out.println("[8] Alugar livro");
-            System.out.println("[9] Dvolver livro");
+            System.out.println("[9] Devolver livro");
             System.out.println("[10] Salvar livros cadastrados");
             System.out.println("[11] Salvar usuarios cadastrados");
             System.out.println("[12] Exibir livros salvos");
