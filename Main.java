@@ -1,8 +1,6 @@
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 
 public class Main {
     public static void main(String[] args) {
@@ -25,7 +23,7 @@ public class Main {
             System.out.println("[6] Buscar livro por ID");
             System.out.println("[7] Editar livro");
             System.out.println("[8] Alugar livro");
-            System.out.println("[9] Devolver livro");
+            System.out.println("[9] Dvolver livro");
             System.out.println("[10] Salvar livros cadastrados");
             System.out.println("[11] Salvar usuarios cadastrados");
             System.out.println("[12] Exibir livros salvos");
@@ -40,12 +38,16 @@ public class Main {
                 case 1:
                     Usuario usuario = new Usuario();
 
-
                     System.out.print("Digite o nome do usuário: ");
                     usuario.setNome(scanner.nextLine());
 
                     System.out.print("Digite o CPF do usuário: ");
-                    usuario.setCpf(scanner.nextLine());
+                    String cpfDigitado = scanner.nextLine();
+                    if (!ValidadorCPF.validar(cpfDigitado)) {
+                        System.out.println("CPF inválido! Cadastro cancelado.");
+                        break;
+                    }
+                    usuario.setCpf(cpfDigitado);
 
                     System.out.print("Digite a senha do usuário: ");
                     usuario.setSenha(scanner.nextLine());
@@ -218,10 +220,11 @@ public class Main {
                         }
                     } while (escolha != 3);
                     break;
+
                 case 9:
                     System.out.print("Digite o ID do livro para devolver: ");
                     String idDevolver = scanner.nextLine();
-                    encontrado = false;
+                    boolean devolvido = false;
                     for (Livro l : livros) {
                         if (l.getId().equals(idDevolver)) {
                             if (!l.getDisponibilidade()) {
@@ -230,12 +233,13 @@ public class Main {
                             } else {
                                 System.out.println("Livro já está disponível.");
                             }
-                            encontrado = true;
+                            devolvido = true;
                             break;
                         }
                     }
-                    if (!encontrado) System.out.println("Livro não encontrado.");
+                    if (!devolvido) System.out.println("Livro não encontrado.");
                     break;
+
                 case 10:
                     if (livros.isEmpty()) {
                         System.out.println("Não existem livros no sistema.");
@@ -252,8 +256,8 @@ public class Main {
                         e.printStackTrace();
                         break;
                     }
-
                     break;
+
                 case 11:
                     if (usuarios.isEmpty()){
                         System.out.println("Não existem usuarios no sistema.");
@@ -270,6 +274,7 @@ public class Main {
                         e.printStackTrace();
                     }
                     break;
+
                 case 12:
                     try{
                         livros.clear();
@@ -279,15 +284,14 @@ public class Main {
                         while((linha = leitorL.readLine()) != null){
                             String[] partes = linha.split(";");
 
-                                Livro l = new Livro();
-                                l.setId(partes[0]);
-                                l.setTitulo(partes[1]);
-                                l.setAutor(partes[2]);
-                                l.setAnoDePublicacao(partes[3]);
-                                l.setIsbn(partes[4]);
-                                l.setDisponibilidade(partes[5].equals("s"));
-                                livros.add(l);
-
+                            Livro l = new Livro();
+                            l.setId(partes[0]);
+                            l.setTitulo(partes[1]);
+                            l.setAutor(partes[2]);
+                            l.setAnoDePublicacao(partes[3]);
+                            l.setIsbn(partes[4]);
+                            l.setDisponibilidade(partes[5].equals("s"));
+                            livros.add(l);
                         }
                         leitorL.close();
                         System.out.println("Exibindo livros salvos. ");
@@ -299,30 +303,30 @@ public class Main {
                         e.printStackTrace();
                     }
                     break;
-                    case 13:
-                        try{
-                            usuarios.clear();
-                            BufferedReader leitorU = new BufferedReader(new FileReader("usuarios.txt"));
-                            String linha;
-                                while((linha = leitorU.readLine()) != null){
-                                    String[] partes = linha.split(";");
-                                    Usuario u =new Usuario();
-                                    u.setNome(partes[0]);
-                                    u.setCpf(partes[1]);
-                                    u.setSenha(partes[2]);
-                                    usuarios.add(u);
-                            }
-                            leitorU.close();
-                                System.out.println("Exibindo usuarios salvos. ");
-                                for (Usuario u : usuarios) {
-                                    System.out.println(u.getNome() + " - " + u.getCpf());
-                                }
-                        }  catch (IOException e) {
-                            System.out.println("Erro ao exibir usuarios salvos");
-                            e.printStackTrace();
+
+                case 13:
+                    try {
+                        usuarios.clear();
+                        BufferedReader leitorU = new BufferedReader(new FileReader("usuarios.txt"));
+                        String linha;
+                        while ((linha = leitorU.readLine()) != null) {
+                            String[] partes = linha.split(";");
+                            Usuario u = new Usuario();
+                            u.setNome(partes[0]);
+                            u.setCpf(partes[1]);
+                            u.setSenha(partes[2]);
+                            usuarios.add(u);
                         }
-                default:
-                    System.out.println("Escolha uma opção válida");
+                        leitorU.close();
+                        System.out.println("Exibindo usuarios salvos. ");
+                        for (Usuario u : usuarios) {
+                            System.out.println(u.getNome() + " - " + u.getCpf());
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Erro ao exibir usuarios salvos");
+                        e.printStackTrace();
+                    }
+                    break;
             }
         } while (opcao != 14);
         System.out.println("Encerrando sistema. Até mais!");
