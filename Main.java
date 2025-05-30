@@ -277,13 +277,13 @@ public class Main {
 
                 case 12:
                     try{
-                        livros.clear();
+                        
                         BufferedReader leitorL = new BufferedReader(new FileReader("livros.txt"));
                         String linha;
 
                         while((linha = leitorL.readLine()) != null){
                             String[] partes = linha.split(";");
-
+                            if (partes.length >=6){
                             Livro l = new Livro();
                             l.setId(partes[0]);
                             l.setTitulo(partes[1]);
@@ -292,6 +292,7 @@ public class Main {
                             l.setIsbn(partes[4]);
                             l.setDisponibilidade(partes[5].equals("s"));
                             livros.add(l);
+                            }
                         }
                         leitorL.close();
                         System.out.println("Exibindo livros salvos. ");
@@ -306,16 +307,18 @@ public class Main {
 
                 case 13:
                     try {
-                        usuarios.clear();
+                        
                         BufferedReader leitorU = new BufferedReader(new FileReader("usuarios.txt"));
                         String linha;
                         while ((linha = leitorU.readLine()) != null) {
                             String[] partes = linha.split(";");
+                            if ( partes.length >= 6){
                             Usuario u = new Usuario();
                             u.setNome(partes[0]);
                             u.setCpf(partes[1]);
                             u.setSenha(partes[2]);
                             usuarios.add(u);
+                            }
                         }
                         leitorU.close();
                         System.out.println("Exibindo usuarios salvos. ");
