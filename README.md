@@ -1,22 +1,13 @@
 Instruções de uso:
 
-Fazer cadastro de usuário no sistema, logo depois o login informando o nome, CPF(apenas números) e senha.
+Ao iniciar o programa, você poderá cadastrar um novo usuário, escolha a opção correspondente e informe nome, CPF e senha. O sistema valida o CPF e cancela o cadastro caso seja inválido. Após cadastrar, você pode fazer login informando CPF e senha. O login é obrigatório para acessar funções como cadastrar livros, editar, alugar e devolver.
 
-Sem cadastro e sem login não é possível cadastrar, nem alugar um livro.
+Ao cadastrar um livro, informe ID, título, ano de publicação, ISBN e autor. O sistema salva os dados em arquivo e permite que o livro seja gerenciado posteriormente. A busca por livro pode ser feita pelo ID, retornando as informações e disponibilidade.
 
-Após login, o usuário libera a opção de cadastrar um livro, informando Id do livro, título, ano de publicação, ISBN e o autor.
+Você pode editar os dados do livro pelo ID, alterando as informações e o status de disponibilidade. Para alugar um livro, é preciso estar logado e buscar pelo ID ou título. Só é possível alugar livros que estejam disponíveis. Da mesma forma, para devolver um livro, informe o ID e o sistema atualizará sua disponibilidade.
 
-Após cadastro de livro, é possível listar quais livros estão cadastrados no sistema, assim como buscá-lo, editá-lo, alugá-lo e devolve-lo.
+O programa também permite exibir todos os livros cadastrados e todos os usuários cadastrados (sem mostrar as senhas).
 
-Se a opção "Buscar" for selecionada, o usuário deverá informar o ID do livro desejado.
+Os dados ficam salvos em dois arquivos: usuarios.txt e livros.txt. O formato de cada linha em usuarios.txt é nome, CPF e senha separados por ponto e vírgula. Já no livros.txt, cada linha contém ID, título, autor, ano, ISBN e status de disponibilidade (“s” para disponível, “n” para alugado).
 
-Se a opção "Editar" for selecionada, o usuário deverá informar o ID para selecionar o livro que deseja editar.
-
-Para editar as informações do livro, o usuário deverá informar o novo ID, novo título, novo ano de publicação, novo ISBN, novo autor e disponibilidade.
-
-Se há alguma informação igual o usuário poderá informar o mesmo dado de antes.
-
-Se a opção "Alugar" for selecionada, o usuário terá a opção de buscar o livro pelo título ou pelo ID, após informar corretamente a informação, o livro será alugado.
-
-Se a opção "Devolver" for selecionada, o usuário deverá informar o ID do livro que deseja devolver à biblioteca.
-
+Por fim, escolha a opção “Sair” para encerrar o programa com segurança.
