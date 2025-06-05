@@ -1,9 +1,12 @@
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Usuario {
     private String nome;
     private String cpf;
     private String senha;
 
-    
+
 
     public String getSenha() {
         return senha;
@@ -28,6 +31,9 @@ public class Usuario {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+    public String toString() {
+        return nome + ";" + cpf + ";" + senha;
+    }
 
     public static boolean validar(String cpf) {
         cpf = cpf.replaceAll("[^\\d]", "");
@@ -50,10 +56,23 @@ public class Usuario {
             if (dig2 >= 10) dig2 = 0;
 
             return dig1 == Character.getNumericValue(cpf.charAt(9)) &&
-                   dig2 == Character.getNumericValue(cpf.charAt(10));
+                    dig2 == Character.getNumericValue(cpf.charAt(10));
         } catch (Exception e) {
             return false;
         }
     }
 
+    public void salvarUsuario(Usuario usuario) {
+
+        try{
+            FileWriter escritorU =new FileWriter("usuarios.txt",true);
+            escritorU.write(usuario.toString()+ "\n");
+
+            escritorU.close();
+        } catch (IOException e) {
+            System.out.println("Erro ao salvar usuarios.");
+            e.printStackTrace();
+
+        }
+    }
 }
