@@ -564,7 +564,7 @@ public class Main {
                         b.printStackTrace();
                     }
 
-                    System.out.println("Digite o nome: ");
+                    System.out.print("Digite o nome: ");
                     String deletarNome = scanner.nextLine();
 
                     System.out.print("Digite o CPF: ");
@@ -573,20 +573,28 @@ public class Main {
                     System.out.print("Digite a senha: ");
                     String deletarSenha = scanner.nextLine();
 
-                    usuarios.removeIf(u -> u.getCpf().equals(deletarCPF) && u.getSenha().equals(deletarSenha) && u.getNome().equals(deletarNome));
+                    boolean usuarioRemovido = usuarios.removeIf(u ->
+                        u.getCpf().equals(deletarCPF) &&
+                        u.getSenha().equals(deletarSenha) &&
+                        u.getNome().equals(deletarNome)
+                    );
 
-                    try (FileWriter escritorU = new FileWriter("usuarios.txt", false);
-                         BufferedWriter bufferU = new BufferedWriter(escritorU)) {
+                    if (usuarioRemovido) {
+                        try (FileWriter escritorU = new FileWriter("usuarios.txt", false);
+                            BufferedWriter bufferU = new BufferedWriter(escritorU)) {
 
-                        for (Usuario u : usuarios) {
-                            bufferU.write(u.toString() + "\n");
+                            for (Usuario u : usuarios) {
+                                bufferU.write(u.toString() + "\n");
+                            }
+                        } catch (IOException e) {
+                            System.out.println("Erro ao salvar usuários.");
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        System.out.println("Erro ao salvar usuários.");
-                        e.printStackTrace();
-                    }
 
-                    System.out.println("Usuário removido com sucesso!");
+                        System.out.println("Usuário removido com sucesso!");
+                    } else {
+                        System.out.println("Usuário não encontrado.");
+                    }
                     break;
                 case 11:
 
@@ -624,27 +632,34 @@ public class Main {
                         b.printStackTrace();
                     }
 
-                    System.out.println("Digite o titrulo do livro: ");
+                    System.out.print("Digite o titulo do livro: ");
                     String deletarTitulo = scanner.nextLine();
 
                     System.out.print("Digite o ISBN do livro: ");
                     String deletarIsbn = scanner.nextLine();
 
 
-                    livros.removeIf(l -> l.getTitulo().equals(deletarTitulo) && l.getIsbn().equals(deletarIsbn));
+                    boolean livroRemovido = livros.removeIf(l ->
+                        l.getTitulo().equals(deletarTitulo) &&
+                        l.getIsbn().equals(deletarIsbn)
+                    );
 
-                    try (FileWriter escritorLL = new FileWriter("livros.txt", false);
-                         BufferedWriter bufferLL = new BufferedWriter(escritorLL)) {
+                    if (livroRemovido) {
+                        try (FileWriter escritorLL = new FileWriter("livros.txt", false);
+                            BufferedWriter bufferLL = new BufferedWriter(escritorLL)) {
 
-                        for (Livro l : livros) {
-                            bufferLL.write(l.toString() + "\n");
+                            for (Livro l : livros) {
+                                bufferLL.write(l.toString() + "\n");
+                            }
+                        } catch (IOException e) {
+                            System.out.println("Erro ao deletar livro.");
+                            e.printStackTrace();
                         }
-                    } catch (IOException e) {
-                        System.out.println("Erro ao Deletar livo.");
-                        e.printStackTrace();
-                    }
 
-                    System.out.println("Livro removido com sucesso!");
+                        System.out.println("Livro removido com sucesso!");
+                    } else {
+                        System.out.println("Livro não encontrado.");
+                    }
                     break;
                 default:
                     System.out.println("Insira uma opção válida");
