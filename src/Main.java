@@ -24,7 +24,9 @@ public class Main {
             System.out.println("[7] Devolver livro");
             System.out.println("[8] Exibir livros salvos");
             System.out.println("[9] Exibir usuarios salvos");
-            System.out.println("[10] Sair");
+            System.out.println("[10] Deletar usuario salvo");
+            System.out.println("[11] Deletar livro salvo");
+            System.out.println("[12] Sair");
             System.out.println("===============================================");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -32,7 +34,7 @@ public class Main {
 
             switch (opcao) {
                 case 1:         //Cadastrar novo usuário
-                                //Pede nome, CPF e senha, valida o CPF, cria um objeto Usuario, adiciona na lista e salva no arquivo "usuarios.txt"
+                    //Pede nome, CPF e senha, valida o CPF, cria um objeto Usuario, adiciona na lista e salva no arquivo "usuarios.txt"
                     Usuario usuario = new Usuario();
 
                     System.out.print("Digite o nome do usuário: ");
@@ -57,9 +59,10 @@ public class Main {
 
 
                 case 2:         //Login
-                                //Solicita CPF e senha, verifica se existe um usuário cadastrado com esses dados
-                                //Marca o usuário como logado para permitir ações protegidas
-                    try{BufferedReader leitorSenha = new BufferedReader(new FileReader("usuarios.txt"));
+                    //Solicita CPF e senha, verifica se existe um usuário cadastrado com esses dados
+                    //Marca o usuário como logado para permitir ações protegidas
+                    try {
+                        BufferedReader leitorSenha = new BufferedReader(new FileReader("usuarios.txt"));
                         String linhas4;
                         while ((linhas4 = leitorSenha.readLine()) != null) {
                             String[] separar4 = linhas4.split(";");
@@ -101,13 +104,13 @@ public class Main {
                                 System.out.println("CPF ou senha incorretos.");
                             }
                         }
-            }
-                    catch(IOException f){
+                    } catch (IOException f) {
                         f.printStackTrace();
-                    }break;
+                    }
+                    break;
 
                 case 3:         //Cadastrar novo livro — só funciona se usuário estiver logado.
-                                //Solicita dados do livro, adiciona na lista e salva no arquivo.
+                    //Solicita dados do livro, adiciona na lista e salva no arquivo.
                     if (!logado) {
                         System.out.println("Você precisa estar logado para cadastrar um livro.");
                         break;
@@ -133,50 +136,50 @@ public class Main {
                     System.out.println("Livro cadastrado com sucesso!");
 
 
-
                     livro.salvarLivro(livro);
                     break;
 
 
                 case 4:             //Buscar livro por ID — lê arquivo e carrega livros.
                     livros.clear();
-                    try { BufferedReader leitoriD = new BufferedReader(new FileReader("livros.txt"));
-                    String linhas5;
-                    while ((linhas5 = leitoriD.readLine()) != null) {
-                        String [] separar5 = linhas5.split(";");
-                        if (separar5.length < 6) {
-                            System.out.println("Erro: Linha mal formatada -> " + linhas5);
-                            continue;
+                    try {
+                        BufferedReader leitoriD = new BufferedReader(new FileReader("livros.txt"));
+                        String linhas5;
+                        while ((linhas5 = leitoriD.readLine()) != null) {
+                            String[] separar5 = linhas5.split(";");
+                            if (separar5.length < 6) {
+                                System.out.println("Erro: Linha mal formatada -> " + linhas5);
+                                continue;
+                            }
+
+                            String ID = separar5[0];
+                            String titulo = separar5[1];
+                            String autor = separar5[2];
+                            String ano = separar5[3];
+                            String isbn = separar5[4];
+                            boolean disponibilidade = separar5[5].equals("s");
+
+                            Livro livro5 = new Livro();
+                            livro5.setId(ID);
+                            livro5.setTitulo(titulo);
+                            livro5.setAutor(autor);
+                            livro5.setAnoDePublicacao(ano);
+                            livro5.setIsbn(isbn);
+                            livro5.setDisponibilidade(disponibilidade);
+
+                            livros.add(livro5);
+
                         }
 
-                        String ID = separar5[0];
-                        String titulo = separar5[1];
-                        String autor = separar5[2];
-                        String ano =separar5[3];
-                        String isbn = separar5[4];
-                        boolean disponibilidade = separar5[5].equals("s");
-
-                        Livro livro5 = new Livro();
-                        livro5.setId(ID);
-                        livro5.setTitulo(titulo);
-                        livro5.setAutor(autor);
-                        livro5.setAnoDePublicacao(ano);
-                        livro5.setIsbn(isbn);
-                        livro5.setDisponibilidade(disponibilidade);
-
-                        livros.add(livro5);
-
+                    } catch (IOException b) {
+                        b.printStackTrace();
                     }
-
-                } catch(IOException b){
-                    b.printStackTrace();
-                }
                     System.out.print("Digite a ID do livro que você deseja buscar: ");
                     String id = scanner.nextLine();
                     boolean encontrado = false;
                     for (Livro l : livros) {
                         if (l.getId().equals(id)) {
-                            System.out.println(l.getTitulo() + " - " + l.getAutor() + " - " + l.getAnoDePublicacao() + " - Disponível: " + (l.getDisponibilidade()? "s" : "n"));
+                            System.out.println(l.getTitulo() + " - " + l.getAutor() + " - " + l.getAnoDePublicacao() + " - Disponível: " + (l.getDisponibilidade() ? "s" : "n"));
                             encontrado = true;
                         }
                     }
@@ -185,10 +188,11 @@ public class Main {
 
                 case 5:         //Editar livro — carrega livros, edita livro pelo ID, salva alterações no arquivo.
                     livros.clear();
-                    try { BufferedReader leitorAlterar = new BufferedReader(new FileReader("livros.txt"));
+                    try {
+                        BufferedReader leitorAlterar = new BufferedReader(new FileReader("livros.txt"));
                         String linhas6;
                         while ((linhas6 = leitorAlterar.readLine()) != null) {
-                            String [] separar6 = linhas6.split(";");
+                            String[] separar6 = linhas6.split(";");
                             if (separar6.length < 6) {
                                 System.out.println("Erro: Linha mal formatada -> " + linhas6);
                                 continue;
@@ -197,7 +201,7 @@ public class Main {
                             String ID = separar6[0];
                             String titulo = separar6[1];
                             String autor = separar6[2];
-                            String ano =separar6[3];
+                            String ano = separar6[3];
                             String isbn = separar6[4];
                             boolean disponibilidade = separar6[5].equals("s");
 
@@ -213,7 +217,7 @@ public class Main {
 
                         }
 
-                    } catch(IOException b){
+                    } catch (IOException b) {
                         b.printStackTrace();
                     }
                     System.out.print("Digite o ID do livro que você deseja editar: ");
@@ -264,7 +268,7 @@ public class Main {
                     break;
 
                 case 6:      //Alugar livro (precisa estar logado)
-                             //Busca por ID ou título, verifica disponibilidade, marca como alugado e salva
+                    //Busca por ID ou título, verifica disponibilidade, marca como alugado e salva
                     if (!logado) {
                         System.out.println("Você precisa estar logado para alugar um livro.");
                         break;
@@ -412,17 +416,18 @@ public class Main {
                     } while (escolha != 3);
                     break;
                 case 7:         //Devolver livro
-                                //Busca por ID, verifica se está alugado, marca como disponível e salva
+                    //Busca por ID, verifica se está alugado, marca como disponível e salva
                     livros.clear();
-                    try { BufferedReader leitordevolver = new BufferedReader(new FileReader("livros.txt"));
+                    try {
+                        BufferedReader leitordevolver = new BufferedReader(new FileReader("livros.txt"));
                         String linhas3;
                         while ((linhas3 = leitordevolver.readLine()) != null) {
-                            String [] separar3 = linhas3.split(";");
+                            String[] separar3 = linhas3.split(";");
 
                             String ID = separar3[0];
                             String titulo = separar3[1];
                             String autor = separar3[2];
-                            String ano =separar3[3];
+                            String ano = separar3[3];
                             String isbn = separar3[4];
                             boolean disponibilidade = separar3[5].equals("s");
 
@@ -438,7 +443,7 @@ public class Main {
 
                         }
 
-                    } catch(IOException c){
+                    } catch (IOException c) {
                         c.printStackTrace();
                     }
                     System.out.print("Digite o ID do livro para devolver: ");
@@ -474,13 +479,13 @@ public class Main {
                     break;
                 case 8:         //Mostrar todos os livros cadastrados
                     livros.clear();
-                    try{
+                    try {
                         BufferedReader leitorL = new BufferedReader(new FileReader("livros.txt"));
                         String linha;
 
-                        while((linha = leitorL.readLine()) != null){
+                        while ((linha = leitorL.readLine()) != null) {
                             String[] partes = linha.split(";");
-                            if (partes.length >=6){
+                            if (partes.length >= 6) {
                                 Livro l = new Livro();
                                 l.setId(partes[0]);
                                 l.setTitulo(partes[1]);
@@ -494,9 +499,9 @@ public class Main {
                         leitorL.close();
                         System.out.println("Exibindo livros salvos. ");
                         for (Livro l : livros) {
-                            System.out.println(l.getId()+ " - " + l.getTitulo() + " - " + l.getAutor() + " - " + l.getAnoDePublicacao() + " - " + l.getIsbn() + " - " + (l.getDisponibilidade() ? "s" : "n"));
+                            System.out.println(l.getId() + " - " + l.getTitulo() + " - " + l.getAutor() + " - " + l.getAnoDePublicacao() + " - " + l.getIsbn() + " - " + (l.getDisponibilidade() ? "s" : "n"));
                         }
-                    }  catch (IOException e) {
+                    } catch (IOException e) {
                         System.out.println("Erro ao exibir livros salvos");
                         e.printStackTrace();
                     }
@@ -510,7 +515,7 @@ public class Main {
 
                         while ((linha = leitorU.readLine()) != null) {
                             String[] partes = linha.split(";");
-                            if ( partes.length >= 2){
+                            if (partes.length >= 2) {
                                 Usuario u = new Usuario();
                                 u.setNome(partes[0]);
                                 u.setCpf(partes[1]);
@@ -528,10 +533,124 @@ public class Main {
                         e.printStackTrace();
                     }
                     break;
+                case 10:
+
+                    usuarios.clear();
+                    try {
+                        BufferedReader DeletadorU = new BufferedReader(new FileReader("usuarios.txt"));
+                        String linhas8;
+                        while ((linhas8 = DeletadorU.readLine()) != null) {
+                            String[] separar8 = linhas8.split(";");
+                            if (separar8.length < 3) {
+                                System.out.println("Erro: Linha mal formatada -> " + linhas8);
+                                continue;
+                            }
+
+                            String nome8 = separar8[0];
+                            String cpf8 = separar8[1];
+                            String senha8 = separar8[2];
+
+
+                            Usuario usuario8 = new Usuario();
+                            usuario8.setNome(nome8);
+                            usuario8.setCpf(cpf8);
+                            usuario8.setSenha(senha8);
+
+                            usuarios.add(usuario8);
+
+                        }
+
+                    } catch (IOException b) {
+                        b.printStackTrace();
+                    }
+
+                    System.out.println("Digite o nome: ");
+                    String deletarNome = scanner.nextLine();
+
+                    System.out.print("Digite o CPF: ");
+                    String deletarCPF = scanner.nextLine();
+
+                    System.out.print("Digite a senha: ");
+                    String deletarSenha = scanner.nextLine();
+
+                    usuarios.removeIf(u -> u.getCpf().equals(deletarCPF) && u.getSenha().equals(deletarSenha) && u.getNome().equals(deletarNome));
+
+                    try (FileWriter escritorU = new FileWriter("usuarios.txt", false);
+                         BufferedWriter bufferU = new BufferedWriter(escritorU)) {
+
+                        for (Usuario u : usuarios) {
+                            bufferU.write(u.toString() + "\n");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Erro ao salvar usuários.");
+                        e.printStackTrace();
+                    }
+
+                    System.out.println("Usuário removido com sucesso!");
+                    break;
+                case 11:
+
+                    livros.clear();
+                    try {
+                        BufferedReader DeletadorL = new BufferedReader(new FileReader("livros.txt"));
+                        String linhas8;
+                        while ((linhas8 = DeletadorL.readLine()) != null) {
+                            String[] separar8 = linhas8.split(";");
+                            if (separar8.length < 6) {
+                                System.out.println("Erro: Linha mal formatada -> " + linhas8);
+                                continue;
+                            }
+
+                            String ID = separar8[0];
+                            String titulo = separar8[1];
+                            String autor = separar8[2];
+                            String ano = separar8[3];
+                            String isbn = separar8[4];
+                            boolean disponibilidade = separar8[5].equals("s");
+
+                            Livro livro8 = new Livro();
+                            livro8.setId(ID);
+                            livro8.setTitulo(titulo);
+                            livro8.setAutor(autor);
+                            livro8.setAnoDePublicacao(ano);
+                            livro8.setIsbn(isbn);
+                            livro8.setDisponibilidade(disponibilidade);
+
+                            livros.add(livro8);
+
+                        }
+
+                    } catch (IOException b) {
+                        b.printStackTrace();
+                    }
+
+                    System.out.println("Digite o titrulo do livro: ");
+                    String deletarTitulo = scanner.nextLine();
+
+                    System.out.print("Digite o ISBN do livro: ");
+                    String deletarIsbn = scanner.nextLine();
+
+
+                    livros.removeIf(l -> l.getTitulo().equals(deletarTitulo) && l.getIsbn().equals(deletarIsbn));
+
+                    try (FileWriter escritorLL = new FileWriter("livros.txt", false);
+                         BufferedWriter bufferLL = new BufferedWriter(escritorLL)) {
+
+                        for (Livro l : livros) {
+                            bufferLL.write(l.toString() + "\n");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Erro ao Deletar livo.");
+                        e.printStackTrace();
+                    }
+
+                    System.out.println("Livro removido com sucesso!");
+                    break;
                 default:
                     System.out.println("Insira uma opção válida");
             }
-        } while (opcao != 10);          //Sair do sistema
+
+        } while (opcao != 12);          //Sair do sistema
         System.out.println("Encerrando sistema. Até mais!");
     }
 }
