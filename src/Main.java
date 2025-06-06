@@ -528,6 +528,8 @@ public class Main {
                         e.printStackTrace();
                     }
                     break;
+                default:
+                    System.out.println("Insira uma opção válida");
             }
         } while (opcao != 10);          //Sair do sistema
         System.out.println("Encerrando sistema. Até mais!");
